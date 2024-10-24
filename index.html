@@ -1,0 +1,102 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="style.css">-
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter city name" spellcheck="false">
+            <button><img src="C:\Users\Harshil Khopkar\OneDrive\Documents\images\search.png"></button>
+        </div>
+        <div class="error" style="display:none;">
+            <p>Invalid city name</p>
+        </div>
+
+        <div class="weather" style="display:none;">
+            <img src="C:\Users\Harshil Khopkar\OneDrive\Documents\images\clouds.png" class="weather-icon">
+            <h1 class="temp">22°C</h1>
+            <h2 class="city">Los Angeles</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="C:\Users\Harshil Khopkar\OneDrive\Documents\images\humidity.png">
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="C:\Users\Harshil Khopkar\OneDrive\Documents\images\wind.png">
+                    <div>
+                        <p class="wind">20km/h</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "cf1094be65c1421e994161016241310";
+        const apiUrl = "https://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=";
+        const searchBox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button");
+        const weatherIcon = document.querySelector(".weather-icon");
+
+        async function checkWeather(city) {
+            try {
+                const response = await fetch(apiUrl + city + "&aqi=yes");
+                const data = await response.json();
+
+                if (data.error) {
+                    document.querySelector(".error").style.display = "block"; 
+                    document.querySelector(".weather").style.display = "none"; 
+                    return; 
+                }
+
+                document.querySelector(".city").innerHTML = data.location.name;
+                document.querySelector(".temp").innerHTML = Math.round(data.current.temp_c) + "°C";
+                document.querySelector(".humidity").innerHTML = data.current.humidity + "%";
+                document.querySelector(".wind").innerHTML = data.current.wind_kph + "km/h";
+
+                const condition = data.current.condition.text.toLowerCase();
+
+                if (condition.includes("clouds")) {
+                    weatherIcon.src = "C:/Users/Harshil Khopkar/OneDrive/Documents/images/clouds.png";
+                } else if (condition.includes("clear")) {
+                    weatherIcon.src = "C:/Users/Harshil Khopkar/OneDrive/Documents/images/clear.png";
+                } else if (condition.includes("rain")) {
+                    weatherIcon.src = "C:/Users/Harshil Khopkar/OneDrive/Documents/images/rain.png";
+                } else if (condition.includes("drizzle")) {
+                    weatherIcon.src = "C:/Users/Harshil Khopkar/OneDrive/Documents/images/drizzle.png";
+                } else if (condition.includes("mist")) {
+                    weatherIcon.src = "C:/Users/Harshil Khopkar/OneDrive/Documents/images/mist.png";
+                } else if (condition.includes("snow")) {
+                    weatherIcon.src = "C:/Users/Harshil Khopkar/OneDrive/Documents/images/snow.png";
+                }
+                
+
+                document.querySelector(".weather").style.display = "block";
+                document.querySelector(".error").style.display = "none";
+
+            } catch (error) {
+                console.error("Error fetching weather data:", error);
+                document.querySelector(".error").style.display = "block"; 
+                document.querySelector(".weather").style.display = "none"; 
+            }
+        }
+
+        searchBtn.addEventListener("click", () => {
+            const city = searchBox.value.trim(); // Trim any whitespace
+            if (city) { 
+                checkWeather(city);
+            } else {
+                document.querySelector(".error").style.display = "block"; 
+                document.querySelector(".weather").style.display = "none"; 
+            }
+        });
+
+    </script>
+</body>
+</html>
