@@ -14,3 +14,9 @@ System requirements:-
 
 -> API Integration:- I have used weatherapi.com for free api(weatherapi.com will give you immediate free api activated but it will be working for 15 days only then you have to create api again or pay for api continuation. ) 
 but you can also use openweathermap.org( In openweathermap.org , you have to wait 3-4 hours to get api activated ,if not activated even after waiting for 3-4 hours. Create another api using another gamil id or write mail to openwearther map.org)
+
+
+
+## License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
